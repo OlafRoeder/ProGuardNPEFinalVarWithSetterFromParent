@@ -1,4 +1,5 @@
 # ProGuard NPE when final variable is accessed from parent
+# SSCCE for https://github.com/Guardsquare/proguard/issues/128
 
 SSCCE for a situation, where ProGuard introduces a NullPointerException into code that is correct without obfuscation.
 Child.class has a final variable "someValue". Child extends AbstractsParent, the final variable is initialized in
