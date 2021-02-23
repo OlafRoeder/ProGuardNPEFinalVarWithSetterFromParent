@@ -1,0 +1,59 @@
+import proguard.gradle.ProGuardTask
+
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+    }
+    dependencies {
+
+        classpath 'com.guardsquare:proguard-gradle:7.0.1'
+
+        // ProGuard 7.0.0 needs this
+        classpath 'com.android.tools.build:gradle:4.1.0'
+    }
+}
+
+plugins {
+
+    // Apply the java plugin to add support for Java
+    id 'java'
+
+    // Apply the application plugin to add support for building a CLI application.
+    id 'application'
+}
+
+group 'de.olaf-roeder'
+version '0.1-DEVELOPER'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+application {
+
+    // Define the main class for the application.
+    mainClassName = 'application.Main'
+
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Main-Class': 'application.Main')
+    }
+}
+
+task proguard(type: ProGuardTask) {
+
+    dependsOn 'jar'
+
+    configuration 'src/main/resources/application/proguard.conf'
+
+    injars 'build/libs/SSCCE_ProGuard_NPE_final_variable_nullcheck-0.1-DEVELOPER.jar'
+    outjars 'build/libs/SSCCE_ProGuard_NPE_final_variable_nullcheck-0.1-DEVELOPER-OBFUSCATED.jar'
+}
